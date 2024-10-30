@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { LogoutButton } from "./LogoutButton";
 import { User } from "lucide-react";
+import Image from "next/image";
 
 export function UserMenu() {
   const { user } = useUser();
@@ -23,7 +24,7 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           {user.imageUrl ? (
-            <img
+            <Image
               src={user.imageUrl}
               alt="Profile"
               className="h-10 w-10 rounded-full object-cover"

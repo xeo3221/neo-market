@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { useThrottle } from "@/hooks/use-throttle";
+import Image from "next/image";
 
 interface FloatingCardProps {
   card: {
@@ -10,17 +11,17 @@ interface FloatingCardProps {
   index: number;
 }
 
-export const FloatingCard = React.memo(({ card, index }: FloatingCardProps) => {
+export const FloatingCard = React.memo(({ card }: FloatingCardProps) => {
   const [position, setPosition] = useState(() => ({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
   }));
-  const [offset, setOffset] = useState(() => ({
+  const [offset] = useState(() => ({
     x: (Math.random() * 2 - 1) * 0.5,
     y: (Math.random() * 2 - 1) * 0.5,
   }));
   const [rotation, setRotation] = useState(Math.random() * 360);
-  const [scale, setScale] = useState(() => {
+  const [scale] = useState(() => {
     const baseScale = 0.4 + Math.random() * 0.3; // Increased base scale
     return Math.random() < 0.3 ? baseScale * 2 : baseScale; // 30% chance of being 1.5 times larger
   });
@@ -80,7 +81,7 @@ export const FloatingCard = React.memo(({ card, index }: FloatingCardProps) => {
         transition: "transform 1s ease-in-out",
       }}
     >
-      <img
+      <Image
         src={card.image}
         alt={card.name}
         className="w-full h-full object-cover"
