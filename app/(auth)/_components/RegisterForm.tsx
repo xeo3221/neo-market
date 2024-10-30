@@ -118,13 +118,12 @@ export function RegisterForm() {
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoaded) return;
-    if (!code) {
+    if (!code)
       return toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: "Please enter the verification code",
       });
-    }
 
     setIsVerified(true);
 
@@ -134,7 +133,7 @@ export function RegisterForm() {
       });
       if (completeSignUp?.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        router.push("/marketplace"); // Direct to marketplace instead of auth-callback
+        router.push("/auth-callback");
       } else {
         toast({
           variant: "destructive",
@@ -163,8 +162,8 @@ export function RegisterForm() {
       setIsLoading(true);
       await signUp.authenticateWithRedirect({
         strategy,
-        redirectUrl: "/marketplace", // Direct to marketplace instead of auth-callback
-        redirectUrlComplete: "/marketplace",
+        redirectUrl: "/auth-callback",
+        redirectUrlComplete: "/auth-callback/",
       });
     } catch (error) {
       console.error("OAuth error:", error);
