@@ -4,42 +4,6 @@ import { redirect } from "next/navigation";
 import { users } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
-type ClerkUser = {
-  clerkUserId: string;
-  email: string;
-  imageUrl?: string;
-};
-
-async function addUserToDatabase(clerkUser: ClerkUser) {
-  const { clerkUserId, email, imageUrl } = clerkUser;
-
-  // Check if user exists
-  const existingUser = await db
-    .select()
-    .from(users)
-    .where(eq(users.clerkUserId, clerkUserId))
-    .limit(1);
-
-  if (existingUser.length === 0) {
-    // Create new user if doesn't exist
-    await db.insert(users).values({
-      clerkUserId,
-      email,
-      imageUrl: imageUrl || null,
-    });
-  }
-
-  return (
-    existingUser[0] ||
-    (await db
-      .select()
-      .from(users)
-      .where(eq(users.clerkUserId, clerkUserId))
-      .limit(1)
-      .then((rows) => rows[0]))
-  );
-}
-
 const AuthCallback = async () => {
   const user = await currentUser();
 
@@ -48,15 +12,23 @@ const AuthCallback = async () => {
   }
 
   try {
-    await addUserToDatabase({
-      clerkUserId: user.id,
-      email: user.emailAddresses[0].emailAddress,
-      imageUrl: user.imageUrl,
-    });
+    // Just check if the user exists in our database
+    const dbUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.clerkUserId, user.id))
+      .limit(1);
+
+    if (!dbUser[0]) {
+      // If user doesn't exist yet, wait briefly and redirect
+      // This gives the webhook a chance to create the user
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
 
     redirect("/marketplace");
   } catch (error) {
     console.error("Error in auth callback:", error);
+    redirect("/error");
   }
 };
 
