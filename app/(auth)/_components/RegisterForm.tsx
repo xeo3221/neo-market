@@ -163,7 +163,7 @@ export function RegisterForm() {
       await signUp.authenticateWithRedirect({
         strategy,
         redirectUrl: "/auth-callback",
-        redirectUrlComplete: "/marketplace",
+        redirectUrlComplete: "/auth-callback",
       });
     } catch (error) {
       console.error("OAuth error:", error);
