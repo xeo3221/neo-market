@@ -19,7 +19,7 @@ export function ItemCard({
   image: string;
 }) {
   return (
-    <Card className="overflow-hidden bg-slate-900 border border-gray-700 transition-all hover:border-gray-600 hover:shadow-lg hover:shadow-cyan-700/20">
+    <Card className="overflow-hidden bg-background border border-gray-700 transition-all hover:border-gray-600 hover:shadow-lg hover:shadow-cyan-700/20">
       <CardContent className="p-0">
         <Image
           src={image}
@@ -29,9 +29,9 @@ export function ItemCard({
           className="w-full h-auto object-cover hover:scale-105 transition-all duration-300"
         />
       </CardContent>
-      <CardFooter className="flex flex-col items-start gap-4 p-3 bg-gray-900 h-full">
+      <CardFooter className="flex flex-col items-start gap-4 p-3 bg-background h-full">
         <div className="flex justify-between items-center w-full">
-          <h3 className="text-base font-bold text-white">{name}</h3>
+          <h3 className="text-base font-bold text-foreground">{name}</h3>
           <div className="text-xl font-bold text-cyan-300">
             ${price.toLocaleString()}
           </div>

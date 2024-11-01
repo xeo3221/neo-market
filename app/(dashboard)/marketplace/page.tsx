@@ -42,6 +42,7 @@ import { ItemCard } from "../_components/ItemCard";
 import { usePathname } from "next/navigation";
 import MarketplaceSidebarContent from "../_components/MarketplaceSidebarContent";
 import { pages } from "../data";
+import { HeaderActions } from "../_components/HeaderActions";
 
 export default function Page() {
   const router = useRouter();
@@ -217,7 +218,7 @@ export default function Page() {
       {/* MAIN CONTENT */}
       <SidebarInset>
         {/* HEADER */}
-        <div className="sticky top-0 z-10 bg-background">
+        <div className="sticky top-0 z-10 bg-background/50 backdrop-blur-3xl">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" aria-label="Toggle sidebar">
@@ -226,18 +227,21 @@ export default function Page() {
               <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
                 <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbItem>
                     <BreadcrumbLink href={pathname}>
                       {pathname.split("/")[1].charAt(0).toUpperCase() +
                         pathname.split("/")[1].slice(1).toLowerCase()}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbPage>Card Name</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
+            </div>
+            <div className="flex items-center gap-2 ml-auto pr-4">
+              <HeaderActions />
             </div>
           </header>
         </div>

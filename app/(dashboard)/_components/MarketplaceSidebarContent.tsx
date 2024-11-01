@@ -70,7 +70,7 @@ export default function MarketplaceSidebarContent({
               placeholder="Search items..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-8 placeholder:text-xs bg-gray-800 border-gray-700 text-white placeholder-gray-500 ring-offset-purple-500/30"
+              className="w-full h-8 placeholder:text-xs bg-transparent border-gray-700 text-white placeholder-gray-500"
             />
           </SidebarMenuItem>
         </SidebarMenu>
