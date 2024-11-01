@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import { Card } from "@/components/ui/card";
 import { useThrottle } from "@/hooks/use-throttle";
 import Image from "next/image";
@@ -11,7 +11,7 @@ interface FloatingCardProps {
   index: number;
 }
 
-export const FloatingCard = React.memo(({ card }: FloatingCardProps) => {
+export const FloatingCard = memo(({ card }: FloatingCardProps) => {
   const [position, setPosition] = useState(() => ({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
