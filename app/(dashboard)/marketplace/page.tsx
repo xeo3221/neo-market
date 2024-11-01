@@ -2,13 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import * as React from "react";
-import {
-  BadgeCheck,
-  ChevronRight,
-  ChevronsUpDown,
-  LogOut,
-  Plus,
-} from "lucide-react";
+import { BadgeCheck, ChevronsUpDown, LogOut, Plus } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Breadcrumb,
@@ -18,11 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import {} from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,17 +24,12 @@ import {
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
-  SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
@@ -52,12 +37,11 @@ import {
 import { getUserData } from "@/app/(dashboard)/data";
 import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
-import { Input } from "@/components/ui/input";
-import { ItemRarity, items, ItemType } from "@/data/items";
+import { items } from "@/data/items";
 import { ItemCard } from "../_components/ItemCard";
-import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname } from "next/navigation";
-import { pages, filterItems } from "../data";
+import MarketplaceSidebarContent from "../_components/MarketplaceSidebarContent";
+import { pages } from "../data";
 
 export default function Page() {
   const router = useRouter();
@@ -80,36 +64,7 @@ export default function Page() {
       setIsLoading(false);
     }
   };
-  const [selectedTypes, setSelectedTypes] = useState<ItemType[]>([]);
-  const [selectedRarities, setSelectedRarities] = useState<ItemRarity[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      const matchesSearch = item.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const matchesType =
-        selectedTypes.length === 0 || selectedTypes.includes(item.type);
-      const matchesRarity =
-        selectedRarities.length === 0 || selectedRarities.includes(item.rarity);
-      return matchesSearch && matchesType && matchesRarity;
-    });
-  }, [searchTerm, selectedTypes, selectedRarities]);
-
-  const handleTypeChange = (type: ItemType) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    );
-  };
-
-  const handleRarityChange = (rarity: ItemRarity) => {
-    setSelectedRarities((prev) =>
-      prev.includes(rarity)
-        ? prev.filter((r) => r !== rarity)
-        : [...prev, rarity]
-    );
-  };
   const [userData, setUserData] = useState<{
     name: string | null;
     email: string;
@@ -140,7 +95,7 @@ export default function Page() {
   );
 
   const pathname = usePathname();
-
+  const [filteredItems, setFilteredItems] = useState(items);
   return (
     <SidebarProvider>
       <Sidebar>
@@ -204,79 +159,7 @@ export default function Page() {
         </SidebarHeader>
 
         {/* SIDEBAR CONTENT */}
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Search</SidebarGroupLabel>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <Input
-                  type="text"
-                  placeholder="Search items..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full h-8 placeholder:text-xs bg-gray-800 border-gray-700 text-white placeholder-gray-500 ring-offset-purple-500/30"
-                />
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroup>
-          <SidebarGroup>
-            <SidebarMenu className="">
-              {filterItems.map((category) => (
-                <Collapsible
-                  key={category.label}
-                  asChild
-                  defaultOpen={true}
-                  className="group/collapsible"
-                >
-                  <SidebarMenuItem className="space-y-2">
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton tooltip={category.label}>
-                        <span className="text-xs">{category.label}</span>
-                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="pb-8">
-                      <SidebarMenuSub
-                        className="space-y-1"
-                        key={category.label}
-                      >
-                        {category.options.map((option) => (
-                          <SidebarMenuSubItem
-                            key={option}
-                            className="flex items-center gap-3"
-                          >
-                            <Checkbox
-                              id={`${category.label}-${option}`}
-                              checked={
-                                category.label === "Types"
-                                  ? selectedTypes.includes(option as ItemType)
-                                  : selectedRarities.includes(
-                                      option as ItemRarity
-                                    )
-                              }
-                              onCheckedChange={() =>
-                                category.label === "Types"
-                                  ? handleTypeChange(option as ItemType)
-                                  : handleRarityChange(option as ItemRarity)
-                              }
-                              className="border-2 border-gray-400 border-opacity-20 data-[state=checked]:bg-purple-500/60 data-[state=checked]:border-none"
-                            />
-                            <label
-                              htmlFor={`${category.label}-${option}`}
-                              className="text-sm font-extralight leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize"
-                            >
-                              {option}
-                            </label>
-                          </SidebarMenuSubItem>
-                        ))}
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
+        <MarketplaceSidebarContent onFilterChange={setFilteredItems} />
 
         {/* SIDEBAR FOOTER */}
         <SidebarFooter>
@@ -337,7 +220,9 @@ export default function Page() {
         <div className="sticky top-0 z-10 bg-background">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
+              <SidebarTrigger className="-ml-1" aria-label="Toggle sidebar">
+                <span className="sr-only">Toggle sidebar</span>
+              </SidebarTrigger>
               <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
                 <BreadcrumbList>
@@ -360,7 +245,6 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <main className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 sm:gap-y-16 pb-16">
-              {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 sm:gap-y-16 pb-16"> */}
               {filteredItems.map((item) => (
                 <ItemCard
                   key={item.id}
