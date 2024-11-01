@@ -14,7 +14,13 @@ export function HeaderActions() {
   const { setTheme } = useTheme();
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 max-w-6xl mx-auto">
+      <Button variant="ghost" size="icon" className="relative">
+        <ShoppingCartIcon className="h-5 w-5" />
+        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[11px] font-medium text-primary-foreground flex items-center justify-center">
+          0
+        </span>
+      </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="relative">
@@ -38,12 +44,6 @@ export function HeaderActions() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Button variant="ghost" size="icon" className="relative">
-        <ShoppingCartIcon className="h-5 w-5" />
-        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[11px] font-medium text-primary-foreground flex items-center justify-center">
-          0
-        </span>
-      </Button>
     </div>
   );
 }

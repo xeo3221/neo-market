@@ -216,7 +216,7 @@ export default function Page() {
       </Sidebar>
 
       {/* MAIN CONTENT */}
-      <SidebarInset>
+      <SidebarInset className="max-w-[1920px] mx-auto">
         {/* HEADER */}
         <div className="sticky top-0 z-10 bg-background/50 backdrop-blur-3xl">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
