@@ -29,6 +29,7 @@ export function ItemCard({
   const handleAddToCart = () => {
     addItem({ id, name, price, image });
     toast({
+      duration: 700,
       title: "Item added to cart",
       description: `${name} has been added to your cart.`,
       variant: "default",

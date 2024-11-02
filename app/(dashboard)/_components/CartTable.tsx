@@ -18,6 +18,7 @@ export function CartTable() {
   const handleRemoveItem = (id: string, name: string) => {
     removeItem(id);
     toast({
+      duration: 700,
       title: "Item removed",
       description: `${name} has been removed from your cart.`,
       variant: "destructive",
@@ -28,6 +29,7 @@ export function CartTable() {
     updateQuantity(id, quantity);
     if (quantity === 0) {
       toast({
+        duration: 700,
         title: "Item removed",
         description: `${name} has been removed from your cart.`,
         variant: "destructive",
