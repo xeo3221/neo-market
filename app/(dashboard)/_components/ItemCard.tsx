@@ -4,20 +4,37 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { ItemType, ItemRarity } from "@/data/items";
+import { useCartStore } from "../stores/useCartStore";
+import { useToast } from "@/hooks/use-toast";
 
-export function ItemCard({
-  name,
-  type,
-  rarity,
-  price,
-  image,
-}: {
+interface ItemCardProps {
+  id: string;
   name: string;
   type: ItemType;
   rarity: ItemRarity;
   price: number;
   image: string;
-}) {
+}
+
+export function ItemCard({
+  id,
+  name,
+  type,
+  rarity,
+  price,
+  image,
+}: ItemCardProps) {
+  const addItem = useCartStore((state) => state.addItem);
+  const { toast } = useToast();
+  const handleAddToCart = () => {
+    addItem({ id, name, price, image });
+    toast({
+      title: "Item added to cart",
+      description: `${name} has been added to your cart.`,
+      variant: "default",
+    });
+  };
+
   return (
     <Card className="overflow-hidden bg-background border border-gray-700 transition-all hover:border-gray-600 hover:shadow-lg hover:shadow-cyan-700/20">
       <CardContent className="p-0">
@@ -61,6 +78,7 @@ export function ItemCard({
             size="sm"
             variant="outline"
             className="flex-1 text-violet-600 border-violet-600 hover:border-violet-700 hover:text-violet-700 hover:bg-violet-700/10 transition-colors text-xs py-1.5"
+            onClick={handleAddToCart}
           >
             <ShoppingCart className="w-3 h-3 mr-1" />
             Add to Cart

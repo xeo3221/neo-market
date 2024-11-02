@@ -49,6 +49,7 @@ export default function Page() {
             {filteredCards.map((card) => (
               <ItemCard
                 key={card.id}
+                id={card.id.toString()}
                 name={card.name}
                 type={card.type}
                 rarity={card.rarity}
