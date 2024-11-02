@@ -4,7 +4,7 @@ import { Item, ItemType, ItemRarity } from "@/data/items";
 interface MarketplaceState {
   // State
   items: Item[];
-  filteredItems: Item[];
+  filteredCards: Item[];
   selectedTypes: ItemType[];
   selectedRarities: ItemRarity[];
   searchTerm: string;
@@ -23,7 +23,7 @@ interface MarketplaceState {
 
 export const useMarketplaceStore = create<MarketplaceState>((set, get) => ({
   items: [],
-  filteredItems: [],
+  filteredCards: [],
   selectedTypes: [],
   selectedRarities: [],
   searchTerm: "",
@@ -31,7 +31,7 @@ export const useMarketplaceStore = create<MarketplaceState>((set, get) => ({
   error: null,
 
   setItems: (items) => {
-    set({ items, filteredItems: items });
+    set({ items, filteredCards: items });
   },
 
   setSearchTerm: (term) => {
@@ -73,6 +73,6 @@ export const useMarketplaceStore = create<MarketplaceState>((set, get) => ({
         selectedRarities.length === 0 || selectedRarities.includes(item.rarity);
       return matchesSearch && matchesType && matchesRarity;
     });
-    set({ filteredItems: filtered });
+    set({ filteredCards: filtered });
   },
 }));

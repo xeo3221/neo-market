@@ -22,6 +22,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
+  SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarInset,
@@ -145,8 +146,10 @@ export default function DashboardLayout({
           </SidebarHeader>
 
           {/* SIDEBAR CONTENT */}
-          {(pathname === "/marketplace" || pathname === "/inventory") && (
+          {pathname === "/marketplace" || pathname === "/inventory" ? (
             <MarketplaceSidebarContent />
+          ) : (
+            <SidebarContent></SidebarContent>
           )}
 
           {/* SIDEBAR FOOTER */}

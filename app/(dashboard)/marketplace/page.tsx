@@ -6,7 +6,7 @@ import { useMarketplaceStore } from "../stores/useMarketplaceStore";
 import { ItemCard } from "../_components/ItemCard";
 
 export default function Page() {
-  const filteredItems = useMarketplaceStore((state) => state.filteredItems);
+  const filteredCards = useMarketplaceStore((state) => state.filteredCards);
   const isLoadingCards = useMarketplaceStore((state) => state.isLoading);
   const error = useMarketplaceStore((state) => state.error);
 
@@ -46,14 +46,14 @@ export default function Page() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 sm:gap-y-16 pb-16">
-            {filteredItems.map((item) => (
+            {filteredCards.map((card) => (
               <ItemCard
-                key={item.id}
-                name={item.name}
-                type={item.type}
-                rarity={item.rarity}
-                price={item.price}
-                image={item.image}
+                key={card.id}
+                name={card.name}
+                type={card.type}
+                rarity={card.rarity}
+                price={Math.floor(card.price)}
+                image={card.image}
               />
             ))}
           </div>
