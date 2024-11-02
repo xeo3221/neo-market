@@ -4,8 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { ItemType, ItemRarity } from "@/data/items";
-import { useCartStore } from "../stores/useCartStore";
-import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/hooks/use-cart";
 
 interface ItemCardProps {
   id: string;
@@ -24,16 +23,10 @@ export function ItemCard({
   price,
   image,
 }: ItemCardProps) {
-  const addItem = useCartStore((state) => state.addItem);
-  const { toast } = useToast();
+  const { addToCart } = useCart();
+
   const handleAddToCart = () => {
-    addItem({ id, name, price, image });
-    toast({
-      duration: 700,
-      title: "Item added to cart",
-      description: `${name} has been added to your cart.`,
-      variant: "default",
-    });
+    addToCart({ id, name, price, image });
   };
 
   return (
