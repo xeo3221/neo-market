@@ -34,15 +34,15 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { getUserData } from "@/app/(dashboard)/data";
+import { getCardsData, getUserData } from "@/app/(dashboard)/data";
 import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
-import { items } from "@/data/items";
-import { ItemCard } from "../_components/ItemCard";
 import { usePathname } from "next/navigation";
 import MarketplaceSidebarContent from "../_components/MarketplaceSidebarContent";
 import { pages } from "../data";
 import { HeaderActions } from "../_components/HeaderActions";
+import { useMarketplaceStore } from "../stores/useMarketplaceStore";
+import { MarketplaceContent } from "../_components/MarketplaceContent";
 
 export default function Page() {
   const router = useRouter();
@@ -96,7 +96,24 @@ export default function Page() {
   );
 
   const pathname = usePathname();
-  const [filteredItems, setFilteredItems] = useState(items);
+
+  const loadItems = async () => {
+    useMarketplaceStore.getState().setIsLoading(true);
+    try {
+      const items = await getCardsData();
+      useMarketplaceStore.getState().setItems(items);
+    } catch (error) {
+      console.error("Error loading items:", error);
+      useMarketplaceStore.getState().setError("Failed to load items");
+    } finally {
+      useMarketplaceStore.getState().setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadItems();
+  }, []);
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -160,7 +177,9 @@ export default function Page() {
         </SidebarHeader>
 
         {/* SIDEBAR CONTENT */}
-        <MarketplaceSidebarContent onFilterChange={setFilteredItems} />
+        {(pathname === "/marketplace" || pathname === "/inventory") && (
+          <MarketplaceSidebarContent />
+        )}
 
         {/* SIDEBAR FOOTER */}
         <SidebarFooter>
@@ -246,22 +265,7 @@ export default function Page() {
           </header>
         </div>
         {/* CONTENT */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <main className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 sm:gap-y-16 pb-16">
-              {filteredItems.map((item) => (
-                <ItemCard
-                  key={item.id}
-                  name={item.name}
-                  type={item.type}
-                  rarity={item.rarity}
-                  price={item.price}
-                  image={item.image}
-                />
-              ))}
-            </div>
-          </main>
-        </div>
+        <MarketplaceContent loadItems={loadItems} />
       </SidebarInset>
     </SidebarProvider>
   );

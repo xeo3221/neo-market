@@ -1,56 +1,74 @@
 import { ItemRarity, ItemType } from "@/data/items";
 
 export async function getUserData() {
-  const response = await fetch("/api/user");
-  if (!response.ok) {
-    throw new Error("Failed to fetch user data");
+  try {
+    const response = await fetch("/api/user");
+    if (!response.ok) throw new Error("Failed to fetch user data");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
   }
-  return response.json();
 }
 
 // cards
 export async function getCardsData() {
-  const response = await fetch("/api/cards");
-  if (!response.ok) {
-    throw new Error("Failed to fetch cards");
+  try {
+    const response = await fetch("/api/cards");
+    if (!response.ok) throw new Error("Failed to fetch cards");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+    throw error;
   }
-  return response.json();
 }
 
 // card details
 export async function getCardDetailsData(cardId: string) {
-  const response = await fetch(`/api/cards/${cardId}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch card details");
+  try {
+    const response = await fetch(`/api/cards/${cardId}`);
+    if (!response.ok) throw new Error("Failed to fetch card details");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching card details:", error);
+    throw error;
   }
-  return response.json();
 }
 
 // transactions
 export async function getTransactionsData() {
-  const response = await fetch("/api/transactions");
-  if (!response.ok) {
-    throw new Error("Failed to fetch transactions");
+  try {
+    const response = await fetch("/api/transactions");
+    if (!response.ok) throw new Error("Failed to fetch transactions");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    throw error;
   }
-  return response.json();
 }
 
 // transaction details
 export async function getTransactionDetailsData(transactionId: string) {
-  const response = await fetch(`/api/transactions/${transactionId}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch transaction details");
+  try {
+    const response = await fetch(`/api/transactions/${transactionId}`);
+    if (!response.ok) throw new Error("Failed to fetch transaction details");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching transaction details:", error);
+    throw error;
   }
-  return response.json();
 }
 
 // inventory
 export async function getInventoryData() {
-  const response = await fetch("/api/inventory");
-  if (!response.ok) {
-    throw new Error("Failed to fetch inventory");
+  try {
+    const response = await fetch("/api/inventory");
+    if (!response.ok) throw new Error("Failed to fetch inventory");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching inventory:", error);
+    throw error;
   }
-  return response.json();
 }
 
 export const pages = [

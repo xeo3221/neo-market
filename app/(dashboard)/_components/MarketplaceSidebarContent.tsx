@@ -16,48 +16,19 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Item, ItemRarity, items, ItemType } from "@/data/items";
+import { ItemRarity, ItemType } from "@/data/items";
 import { filterItems } from "../data";
-import { useEffect, useState } from "react";
+import { useMarketplaceStore } from "../stores/useMarketplaceStore";
 
-interface MarketplaceSidebarContentProps {
-  onFilterChange: (items: Item[]) => void;
-}
-
-export default function MarketplaceSidebarContent({
-  onFilterChange,
-}: MarketplaceSidebarContentProps) {
-  const [selectedTypes, setSelectedTypes] = useState<ItemType[]>([]);
-  const [selectedRarities, setSelectedRarities] = useState<ItemRarity[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleTypeChange = (type: ItemType) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    );
-  };
-
-  const handleRarityChange = (rarity: ItemRarity) => {
-    setSelectedRarities((prev) =>
-      prev.includes(rarity)
-        ? prev.filter((r) => r !== rarity)
-        : [...prev, rarity]
-    );
-  };
-
-  useEffect(() => {
-    const filtered = items.filter((item) => {
-      const matchesSearch = item.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const matchesType =
-        selectedTypes.length === 0 || selectedTypes.includes(item.type);
-      const matchesRarity =
-        selectedRarities.length === 0 || selectedRarities.includes(item.rarity);
-      return matchesSearch && matchesType && matchesRarity;
-    });
-    onFilterChange(filtered);
-  }, [searchTerm, selectedTypes, selectedRarities, onFilterChange]);
+export default function MarketplaceSidebarContent() {
+  const {
+    searchTerm,
+    selectedTypes,
+    selectedRarities,
+    setSearchTerm,
+    toggleType,
+    toggleRarity,
+  } = useMarketplaceStore();
 
   return (
     <SidebarContent>
@@ -76,7 +47,7 @@ export default function MarketplaceSidebarContent({
         </SidebarMenu>
       </SidebarGroup>
       <SidebarGroup>
-        <SidebarMenu className="">
+        <SidebarMenu>
           {filterItems.map((category) => (
             <Collapsible
               key={category.label}
@@ -107,8 +78,8 @@ export default function MarketplaceSidebarContent({
                           }
                           onCheckedChange={() =>
                             category.label === "Types"
-                              ? handleTypeChange(option as ItemType)
-                              : handleRarityChange(option as ItemRarity)
+                              ? toggleType(option as ItemType)
+                              : toggleRarity(option as ItemRarity)
                           }
                           className="border-2 border-gray-400 border-opacity-20 data-[state=checked]:bg-purple-500/60 data-[state=checked]:border-none"
                         />
