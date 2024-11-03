@@ -94,8 +94,12 @@ export async function createCheckoutSession(items: CartItem[]) {
 
     // Create Stripe checkout session
     const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      ? `https://neo-market-gamma.vercel.app`
       : process.env.NEXT_PUBLIC_APP_URL || clientEnv.NEXT_PUBLIC_APP_URL;
+
+    // const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+    //   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    //   : process.env.NEXT_PUBLIC_APP_URL || clientEnv.NEXT_PUBLIC_APP_URL;
 
     // Create Stripe checkout session with corrected URLs
     const session = await stripe.checkout.sessions.create({
