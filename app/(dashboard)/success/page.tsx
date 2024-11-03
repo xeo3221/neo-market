@@ -4,19 +4,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CheckCircle2, XCircle } from "lucide-react";
 
-// Updated Props interface with the correct types
-type PageProps = {
-  searchParams:
-    | { [key: string]: string | string[] | undefined }
-    | URLSearchParams;
-};
-
-export default async function SuccessPage({ searchParams }: PageProps) {
-  // Get transaction_id directly from searchParams
-  const transactionId =
-    searchParams instanceof URLSearchParams
-      ? searchParams.get("transaction_id")
-      : searchParams.transaction_id;
+export default async function SuccessPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const transactionId = searchParams.transaction_id;
 
   // Type guard for transactionId
   if (!transactionId || Array.isArray(transactionId)) {
