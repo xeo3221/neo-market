@@ -85,37 +85,47 @@ export function HeaderActions() {
             )}
           </Button>
         </DrawerTrigger>
-        <DrawerContent className="flex flex-col max-h-[90vh]">
-          <div className="max-w-5xl mx-auto w-full">
-            <DrawerHeader>
-              <DrawerTitle>Shopping Cart</DrawerTitle>
-            </DrawerHeader>
-            <div className="flex-1 overflow-y-auto px-4">
-              <CartTable />
-            </div>
-            {items && items.length > 0 && (
-              <div className="p-4 border-t">
-                <div className="flex items-center justify-between mb-4">
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Shopping Cart</DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4 max-h-[65vh] overflow-y-auto">
+            <CartTable />
+          </div>
+          {items && items.length > 0 && (
+            <div className="p-4 border-t bg-background">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => clearCart()}
+                    className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+                  >
+                    Clear Cart
+                  </Button>
+                </div>
+                <div className="flex items-center gap-2">
                   <span className="text-lg font-semibold">Total:</span>
                   <span className="text-lg font-bold">
                     ${getTotal().toLocaleString()}
                   </span>
                 </div>
-                <Button
-                  className="w-full bg-violet-600 hover:bg-violet-700 text-white"
-                  size="lg"
-                  onClick={handleCheckout}
-                  disabled={isCheckingOut}
-                >
-                  {isCheckingOut ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    "Buy Now"
-                  )}
-                </Button>
               </div>
-            )}
-          </div>
+              <Button
+                className="w-full bg-violet-600 hover:bg-violet-700 text-white"
+                size="lg"
+                onClick={handleCheckout}
+                disabled={isCheckingOut}
+              >
+                {isCheckingOut ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  "Buy Now"
+                )}
+              </Button>
+            </div>
+          )}
         </DrawerContent>
       </Drawer>
       {/* Theme Toggle */}
