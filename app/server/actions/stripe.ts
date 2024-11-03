@@ -96,8 +96,12 @@ export async function createCheckoutSession(items: CartItem[]) {
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: "payment",
-      success_url: `${clientEnv.NEXT_PUBLIC_APP_URL}/success?transaction_id=${transaction.id}`,
-      cancel_url: `${clientEnv.NEXT_PUBLIC_APP_URL}/marketplace?canceled=true`,
+      success_url: `${
+        process.env.NEXT_PUBLIC_APP_URL || clientEnv.NEXT_PUBLIC_APP_URL
+      }/success?transaction_id=${transaction.id}`,
+      cancel_url: `${
+        process.env.NEXT_PUBLIC_APP_URL || clientEnv.NEXT_PUBLIC_APP_URL
+      }/marketplace?canceled=true`,
       metadata: {
         transactionId: transaction.id,
         userId,
