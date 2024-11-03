@@ -5,13 +5,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { cardId: string } }
+  context: { params: { cardId: string } }
 ) {
   try {
     const [card] = await db
       .select()
       .from(cards)
-      .where(eq(cards.id, parseInt(params.cardId)));
+      .where(eq(cards.id, parseInt(context.params.cardId)));
 
     if (!card) {
       return new NextResponse("Card not found", { status: 404 });
