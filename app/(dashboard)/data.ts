@@ -35,6 +35,18 @@ export async function getInventoryData() {
   }
 }
 
+// transactions
+export async function getTransactionsData() {
+  try {
+    const response = await fetch("/server/api/transactions");
+    if (!response.ok) throw new Error("Failed to fetch transactions");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    throw error;
+  }
+}
+
 // // card details
 // export async function getCardDetailsData(cardId: string) {
 //   try {
@@ -43,18 +55,6 @@ export async function getInventoryData() {
 //     return response.json();
 //   } catch (error) {
 //     console.error("Error fetching card details:", error);
-//     throw error;
-//   }
-// }
-
-// // transactions
-// export async function getTransactionsData() {
-//   try {
-//     const response = await fetch("/server/api/transactions");
-//     if (!response.ok) throw new Error("Failed to fetch transactions");
-//     return response.json();
-//   } catch (error) {
-//     console.error("Error fetching transactions:", error);
 //     throw error;
 //   }
 // }
