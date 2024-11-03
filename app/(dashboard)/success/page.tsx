@@ -4,12 +4,16 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CheckCircle2, XCircle } from "lucide-react";
 
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
 export default async function SuccessPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: SearchParams;
 }) {
-  const transactionId = searchParams.transaction_id;
+  // Wait for searchParams to be available
+  const resolvedParams = await searchParams;
+  const transactionId = resolvedParams.transaction_id;
 
   // Type guard for transactionId
   if (!transactionId || Array.isArray(transactionId)) {
