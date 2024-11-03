@@ -39,6 +39,7 @@ import { useClerk } from "@clerk/nextjs";
 import { pages } from "./data";
 import { HeaderActions } from "./_components/HeaderActions";
 import MarketplaceSidebarContent from "./_components/MarketplaceSidebarContent";
+import { InventoryFilterBar } from "./_components/InventoryFilterBar";
 import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardLayout({
@@ -147,8 +148,10 @@ export default function DashboardLayout({
           </SidebarHeader>
 
           {/* SIDEBAR CONTENT */}
-          {pathname === "/marketplace" || pathname === "/inventory" ? (
+          {pathname === "/marketplace" ? (
             <MarketplaceSidebarContent />
+          ) : pathname === "/inventory" ? (
+            <InventoryFilterBar />
           ) : (
             <SidebarContent></SidebarContent>
           )}
