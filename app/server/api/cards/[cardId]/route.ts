@@ -1,17 +1,20 @@
 import { db } from "@/drizzle/db";
 import { cards } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  context: { params: { cardId: string } }
-) {
+type Props = {
+  params: {
+    cardId: string;
+  };
+};
+
+export async function GET(request: NextRequest, { params }: Props) {
   try {
     const [card] = await db
       .select()
       .from(cards)
-      .where(eq(cards.id, parseInt(context.params.cardId)));
+      .where(eq(cards.id, parseInt(params.cardId)));
 
     if (!card) {
       return new NextResponse("Card not found", { status: 404 });
