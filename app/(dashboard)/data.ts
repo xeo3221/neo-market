@@ -23,42 +23,6 @@ export async function getCardsData() {
   }
 }
 
-// card details
-export async function getCardDetailsData(cardId: string) {
-  try {
-    const response = await fetch(`/server/api/cards/${cardId}`);
-    if (!response.ok) throw new Error("Failed to fetch card details");
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching card details:", error);
-    throw error;
-  }
-}
-
-// transactions
-export async function getTransactionsData() {
-  try {
-    const response = await fetch("/server/api/transactions");
-    if (!response.ok) throw new Error("Failed to fetch transactions");
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching transactions:", error);
-    throw error;
-  }
-}
-
-// transaction details
-export async function getTransactionDetailsData(transactionId: string) {
-  try {
-    const response = await fetch(`/server/api/transactions/${transactionId}`);
-    if (!response.ok) throw new Error("Failed to fetch transaction details");
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching transaction details:", error);
-    throw error;
-  }
-}
-
 // inventory
 export async function getInventoryData() {
   try {
@@ -70,6 +34,42 @@ export async function getInventoryData() {
     throw error;
   }
 }
+
+// // card details
+// export async function getCardDetailsData(cardId: string) {
+//   try {
+//     const response = await fetch(`/server/api/cards/${cardId}`);
+//     if (!response.ok) throw new Error("Failed to fetch card details");
+//     return response.json();
+//   } catch (error) {
+//     console.error("Error fetching card details:", error);
+//     throw error;
+//   }
+// }
+
+// // transactions
+// export async function getTransactionsData() {
+//   try {
+//     const response = await fetch("/server/api/transactions");
+//     if (!response.ok) throw new Error("Failed to fetch transactions");
+//     return response.json();
+//   } catch (error) {
+//     console.error("Error fetching transactions:", error);
+//     throw error;
+//   }
+// }
+
+// // transaction details
+// export async function getTransactionDetailsData(transactionId: string) {
+//   try {
+//     const response = await fetch(`/server/api/transactions/${transactionId}`);
+//     if (!response.ok) throw new Error("Failed to fetch transaction details");
+//     return response.json();
+//   } catch (error) {
+//     console.error("Error fetching transaction details:", error);
+//     throw error;
+//   }
+// }
 
 export const pages = [
   {

@@ -3,21 +3,23 @@ import { handleSuccessfulPayment } from "@/app/server/actions/stripe";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { Metadata } from "next";
 
-interface SuccessPageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
+export const metadata: Metadata = {
+  title: "Purchase Status | Trading Card Game",
+  description: "Check the status of your card purchase",
+};
+
+interface PageProps {
+  searchParams: {
+    transaction_id?: string;
+  };
 }
 
-export default async function SuccessPage({ searchParams }: SuccessPageProps) {
-  // Wait for searchParams to be available
-  const params = await new Promise<typeof searchParams>((resolve) => {
-    resolve(searchParams);
-  });
+export default async function SuccessPage({ searchParams }: PageProps) {
+  const transactionId = searchParams?.transaction_id;
 
-  const transactionId = params?.transaction_id;
-
-  // Type guard for transactionId
-  if (!transactionId || Array.isArray(transactionId)) {
+  if (!transactionId) {
     redirect("/marketplace");
   }
 
