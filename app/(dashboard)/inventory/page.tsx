@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function InventoryPage() {
-  const { filteredItems, setItems } = useInventoryStore();
+  const { filteredItems, setItems, getTotalValue } = useInventoryStore();
   const router = useRouter();
 
   const { data, isLoading, error } = useInventory();
@@ -56,9 +56,20 @@ export default function InventoryPage() {
     return acc;
   }, {} as Record<string, typeof filteredItems>);
 
+  // Calculate total collection value
+  const totalCollectionValue = getTotalValue();
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-      <h1 className="text-2xl font-bold mb-6">Your Inventory</h1>
+      <div className="flex justify-between sm:items-center items-start mb-6 sm:flex-row flex-col gap-4">
+        <h1 className="text-2xl font-bold">Your Inventory</h1>
+        <div className="text-lg">
+          <span className="text-muted-foreground">Collection Value: </span>
+          <span className="font-semibold text-cyan-400">
+            ${totalCollectionValue.toLocaleString()}
+          </span>
+        </div>
+      </div>
 
       {Object.entries(groupedInventory).map(([type, cards]) => (
         <div key={type} className="mb-8">

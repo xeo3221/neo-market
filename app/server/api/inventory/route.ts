@@ -21,7 +21,7 @@ export async function GET() {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    // Fetch user's cards with their details
+    // Fetch user's cards with their details including price
     const userInventory = await db
       .select({
         cardId: userCards.cardId,
@@ -30,6 +30,7 @@ export async function GET() {
         type: cards.type,
         rarity: cards.rarity,
         image: cards.image,
+        price: cards.price,
         obtainedAt: userCards.obtainedAt,
       })
       .from(userCards)

@@ -7,6 +7,7 @@ interface InventoryItem {
   type: ItemType;
   rarity: ItemRarity;
   quantity: number;
+  price?: number;
   image: string;
   obtainedAt: Date;
 }
@@ -25,6 +26,7 @@ interface InventoryState {
   toggleType: (type: ItemType) => void;
   toggleRarity: (rarity: ItemRarity) => void;
   filterItems: () => void;
+  getTotalValue: () => number;
 }
 
 export const useInventoryStore = create<InventoryState>((set, get) => ({
@@ -74,5 +76,12 @@ export const useInventoryStore = create<InventoryState>((set, get) => ({
       return matchesSearch && matchesType && matchesRarity;
     });
     set({ filteredItems: filtered });
+  },
+
+  getTotalValue: () => {
+    const { filteredItems } = get();
+    return filteredItems.reduce((total, card) => {
+      return total + (card.price || 0) * (card.quantity || 1);
+    }, 0);
   },
 }));
