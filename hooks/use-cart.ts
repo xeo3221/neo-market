@@ -12,9 +12,10 @@ export function useCart() {
       name: string;
       price: number;
       image: string;
+      quantity: number;
     }) => {
-      addItem(item);
-      return Promise.resolve(); // Simulating an API call
+      addItem({ ...item, quantity: item.quantity });
+      return Promise.resolve();
     },
     onSuccess: (_, variables) => {
       toast({

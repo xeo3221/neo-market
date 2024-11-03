@@ -56,7 +56,7 @@ export function ItemCard({
   const handleAddToCart = () => {
     try {
       setIsAddingToCart(true);
-      addToCart({ id, name, price, image });
+      addToCart({ id, name, price, image, quantity: 1 });
       toast({
         duration: 3000,
         title: "Success",

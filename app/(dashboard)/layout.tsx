@@ -98,7 +98,7 @@ export default function DashboardLayout({
   );
 
   return (
-    <div className="max-w-[1920px] mx-auto">
+    <div>
       <SidebarProvider>
         <Sidebar>
           {/* SIDEBAR HEADER */}
@@ -207,10 +207,10 @@ export default function DashboardLayout({
         </Sidebar>
 
         {/* MAIN CONTENT */}
-        <SidebarInset className="max-w-[1920px] mx-auto">
+        <SidebarInset>
           {/* HEADER */}
-          <div className="sticky top-0 z-10 bg-background/50 backdrop-blur-3xl">
-            <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="sticky top-0 z-20 bg-background/50 backdrop-blur-3xl">
+            <header className="flex h-16 shrink-0 items-center gap-2 max-w-[1920px] mx-auto">
               <div className="flex items-center gap-2 px-4">
                 <SidebarTrigger className="-ml-1" aria-label="Toggle sidebar">
                   <span className="sr-only">Toggle sidebar</span>
@@ -236,7 +236,11 @@ export default function DashboardLayout({
               </div>
             </header>
           </div>
-          {children}
+          {/* Glowing effect */}
+          <div className="hidden md:block fixed animate-floating top-1/4 left-0 w-[1000px] h-[800px] bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-cyan-500/20 rounded-full filter blur-[100px] opacity-20" />
+          <div className="fixed animate-floating bottom-0 right-0 w-[1000px] h-[1800px] bg-gradient-to-br from-pink-500/50 via-purple-500/50 to-cyan-500/50 rounded-full filter blur-[100px] opacity-20" />
+
+          <div className="max-w-[1920px] mx-auto z-10">{children}</div>
         </SidebarInset>
       </SidebarProvider>
       <Toaster />

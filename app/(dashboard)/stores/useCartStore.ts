@@ -13,7 +13,7 @@ interface CartStore {
   userId: string | null;
   items: CartItem[];
   setUserId: (userId: string | null) => void;
-  addItem: (item: Omit<CartItem, "quantity">) => void;
+  addItem: (item: CartItem) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   getTotal: () => number;
@@ -49,7 +49,9 @@ export const useCartStore = create<CartStore>()(
 
           if (existingItem) {
             const newItems = currentItems.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+              i.id === item.id
+                ? { ...i, quantity: i.quantity + item.quantity }
+                : i
             );
             if (state.userId) {
               localStorage.setItem(
@@ -60,7 +62,7 @@ export const useCartStore = create<CartStore>()(
             return { items: newItems };
           }
 
-          const newItems = [...currentItems, { ...item, quantity: 1 }];
+          const newItems = [...currentItems, item];
           if (state.userId) {
             localStorage.setItem(
               `cart-storage-${state.userId}`,

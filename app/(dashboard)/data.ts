@@ -47,29 +47,29 @@ export async function getTransactionsData() {
   }
 }
 
-// // card details
-// export async function getCardDetailsData(cardId: string) {
-//   try {
-//     const response = await fetch(`/server/api/cards/${cardId}`);
-//     if (!response.ok) throw new Error("Failed to fetch card details");
-//     return response.json();
-//   } catch (error) {
-//     console.error("Error fetching card details:", error);
-//     throw error;
-//   }
-// }
+// card details
+export async function getCardData(cardId: string) {
+  try {
+    const response = await fetch(`/server/api/cards/${cardId}`);
+    if (!response.ok) throw new Error("Failed to fetch card data");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching card data:", error);
+    throw error;
+  }
+}
 
-// // transaction details
-// export async function getTransactionDetailsData(transactionId: string) {
-//   try {
-//     const response = await fetch(`/server/api/transactions/${transactionId}`);
-//     if (!response.ok) throw new Error("Failed to fetch transaction details");
-//     return response.json();
-//   } catch (error) {
-//     console.error("Error fetching transaction details:", error);
-//     throw error;
-//   }
-// }
+// transaction details
+export async function getTransactionDetailsData(transactionId: string) {
+  try {
+    const response = await fetch(`/server/api/transactions/${transactionId}`);
+    if (!response.ok) throw new Error("Failed to fetch transaction details");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching transaction details:", error);
+    throw error;
+  }
+}
 
 export const pages = [
   {
