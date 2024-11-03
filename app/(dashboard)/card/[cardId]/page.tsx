@@ -26,13 +26,50 @@ export default function CardPage({
   const router = useRouter();
   const { toast } = useToast();
   const { addToCart } = useCart();
-  const { data: card, isLoading } = useQuery({
+
+  const {
+    data: card,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["card", resolvedParams.cardId],
     queryFn: () => getCardData(resolvedParams.cardId),
   });
 
-  if (isLoading || !card) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-red-500 text-center py-8">
+        Error loading card details
+        <button
+          onClick={() => window.location.reload()}
+          className="ml-4 text-purple-500 hover:text-purple-400"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (!card) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">Card not found</p>
+        <button
+          onClick={() => router.push("/marketplace")}
+          className="mt-4 text-purple-500 hover:text-purple-400"
+        >
+          Return to Marketplace
+        </button>
+      </div>
+    );
   }
 
   const handleBuyNow = async () => {

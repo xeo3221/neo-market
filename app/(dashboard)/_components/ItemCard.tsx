@@ -76,7 +76,10 @@ export function ItemCard({
   };
 
   return (
-    <Card className="overflow-hidden bg-background border border-gray-700 transition-all hover:border-gray-600 hover:shadow-lg hover:shadow-cyan-700/20">
+    <Card
+      className="overflow-hidden bg-background border border-gray-700 transition-all hover:border-gray-600 hover:shadow-lg hover:shadow-cyan-700/20 cursor-pointer"
+      onClick={() => router.push(`/card/${id}`)}
+    >
       <CardContent className="p-0">
         <Image
           src={image}

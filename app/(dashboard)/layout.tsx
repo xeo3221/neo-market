@@ -41,6 +41,7 @@ import { HeaderActions } from "./_components/HeaderActions";
 import MarketplaceSidebarContent from "./_components/MarketplaceSidebarContent";
 import { InventoryFilterBar } from "./_components/InventoryFilterBar";
 import { Toaster } from "@/components/ui/toaster";
+import { useCurrentCard } from "@/hooks/use-current-card";
 
 export default function DashboardLayout({
   children,
@@ -51,6 +52,8 @@ export default function DashboardLayout({
   const { signOut, openUserProfile } = useClerk();
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
+  const cardId = pathname.match(/\/card\/(.+)/)?.[1];
+  const { data: card, isLoading: cardLoading } = useCurrentCard(cardId);
 
   const handleAccount = () => {
     openUserProfile();
@@ -96,6 +99,20 @@ export default function DashboardLayout({
     }),
     [userData]
   );
+
+  const segments = pathname.split("/");
+  const firstSegment = segments[1];
+
+  // Determine the correct href for the breadcrumb
+  const breadcrumbHref =
+    firstSegment === "card" ? "/marketplace" : `/${firstSegment}`;
+
+  // Determine the display text
+  const breadcrumbText =
+    firstSegment === "card"
+      ? "Marketplace"
+      : firstSegment.charAt(0).toUpperCase() +
+        firstSegment.slice(1).toLowerCase();
 
   return (
     <div>
@@ -219,15 +236,22 @@ export default function DashboardLayout({
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href={pathname}>
-                        {pathname.split("/")[1].charAt(0).toUpperCase() +
-                          pathname.split("/")[1].slice(1).toLowerCase()}
+                      <BreadcrumbLink href={breadcrumbHref}>
+                        {breadcrumbText}
                       </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>Card Name</BreadcrumbPage>
-                    </BreadcrumbItem>
+                    {cardId && (
+                      <>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                          <BreadcrumbPage>
+                            {cardLoading
+                              ? "Loading..."
+                              : card?.name ?? "Card Not Found"}
+                          </BreadcrumbPage>
+                        </BreadcrumbItem>
+                      </>
+                    )}
                   </BreadcrumbList>
                 </Breadcrumb>
               </div>
