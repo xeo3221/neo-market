@@ -93,15 +93,16 @@ export async function createCheckoutSession(items: CartItem[]) {
     );
 
     // Create Stripe checkout session
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : process.env.NEXT_PUBLIC_APP_URL || clientEnv.NEXT_PUBLIC_APP_URL;
+
+    // Create Stripe checkout session with corrected URLs
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: "payment",
-      success_url: `${
-        process.env.NEXT_PUBLIC_APP_URL || clientEnv.NEXT_PUBLIC_APP_URL
-      }/success?transaction_id=${transaction.id}`,
-      cancel_url: `${
-        process.env.NEXT_PUBLIC_APP_URL || clientEnv.NEXT_PUBLIC_APP_URL
-      }/marketplace?canceled=true`,
+      success_url: `${baseUrl}/success?transaction_id=${transaction.id}`,
+      cancel_url: `${baseUrl}/marketplace?canceled=true`,
       metadata: {
         transactionId: transaction.id,
         userId,
