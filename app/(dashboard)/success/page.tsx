@@ -3,28 +3,27 @@ import { handleSuccessfulPayment } from "@/app/server/actions/stripe";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CheckCircle2, XCircle } from "lucide-react";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Purchase Status | Trading Card Game",
-  description: "Check the status of your card purchase",
+// Updated Props interface with the correct types
+type PageProps = {
+  searchParams:
+    | { [key: string]: string | string[] | undefined }
+    | URLSearchParams;
 };
 
-interface PageProps {
-  searchParams: {
-    transaction_id?: string;
-  };
-}
-
 export default async function SuccessPage({ searchParams }: PageProps) {
-  const transactionId = searchParams?.transaction_id;
+  // Get transaction_id directly from searchParams
+  const transactionId =
+    searchParams instanceof URLSearchParams
+      ? searchParams.get("transaction_id")
+      : searchParams.transaction_id;
 
-  if (!transactionId) {
+  // Type guard for transactionId
+  if (!transactionId || Array.isArray(transactionId)) {
     redirect("/marketplace");
   }
 
   let success = false;
-
   try {
     await handleSuccessfulPayment(transactionId);
     success = true;
@@ -44,7 +43,6 @@ export default async function SuccessPage({ searchParams }: PageProps) {
             your inventory.
           </p>
         </div>
-
         <div className="flex gap-4">
           <Button asChild>
             <Link href="/inventory">View Inventory</Link>
@@ -67,7 +65,6 @@ export default async function SuccessPage({ searchParams }: PageProps) {
           this persists.
         </p>
       </div>
-
       <Button variant="outline" asChild>
         <Link href="/marketplace">Return to Marketplace</Link>
       </Button>
