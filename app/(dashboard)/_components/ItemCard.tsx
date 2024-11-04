@@ -33,7 +33,8 @@ export function ItemCard({
   const [isBuying, setIsBuying] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  const handleBuyNow = async () => {
+  const handleBuyNow = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     try {
       setIsBuying(true);
       const response = await createCheckoutSession([{ id, quantity: 1 }]);
@@ -53,7 +54,8 @@ export function ItemCard({
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
     try {
       setIsAddingToCart(true);
       addToCart({ id, name, price, image, quantity: 1 });
