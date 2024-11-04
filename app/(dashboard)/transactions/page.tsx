@@ -15,6 +15,7 @@ import { ChevronDown, ChevronUp, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import Image from "next/image";
+import { format } from "date-fns";
 
 export default function TransactionsPage() {
   const { table, isLoading, error } = useTransactionsTable();
@@ -41,7 +42,8 @@ export default function TransactionsPage() {
       </div>
     );
   }
-
+  // log a date
+  console.log(new Date(table.getRowModel().rows[0].original.createdAt));
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold mb-6">Your Transactions</h1>
@@ -81,12 +83,13 @@ export default function TransactionsPage() {
                     }`}
                     onClick={() => toggleTransaction(row.original.id)}
                   >
-                    <TableCell className="sm:w-1/4">
+                    <TableCell className="w-full sm:w-1/4">
                       <div className="flex flex-col sm:flex-row sm:items-center">
                         <div className="font-medium">
-                          {new Date(
-                            row.original.createdAt
-                          ).toLocaleDateString()}
+                          {format(
+                            new Date(row.original.createdAt),
+                            "MMM dd, yyyy HH:mm"
+                          )}
                         </div>
                         <div className="sm:hidden mt-1">
                           <div className="text-sm text-muted-foreground">

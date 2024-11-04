@@ -14,7 +14,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { use } from "react";
 import { format } from "date-fns";
-// import { Separator } from "@/components/ui/separator";
 import { CardActivityChart } from "@/app/(dashboard)/_components/charts/CardActivityChart";
 import { TransactionValueChart } from "@/app/(dashboard)/_components/charts/TransactionValueChart";
 
