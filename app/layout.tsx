@@ -7,8 +7,8 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Cyberpunk Marketplace",
-  description: "Trade cyberpunk characters, weapons, and gadgets",
+  title: "NeoMarket",
+  description: "NeoMarket is a marketplace for trading digital assets",
 };
 
 export default function RootLayout({
