@@ -3,7 +3,7 @@
 import { useTransactions } from "@/hooks/use-transactions";
 import { useTransactionsStore } from "../stores/useTransactionsStore";
 import { useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import {
   Table,
@@ -56,14 +56,14 @@ export default function TransactionsPage() {
   const truncateId = (id: string) => `${id.slice(0, 5)}...`;
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 pt-8">
+    <div className="px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold mb-6">Your Transactions</h1>
 
       <Card className="w-full max-w-full bg-background/60">
         <div className="max-w-full">
-          <Table className="table-fixed w-full">
+          <Table className="w-full table-fixed">
             <TableHeader>
-              <TableRow>
+              <TableRow className="hidden sm:table-row">
                 <TableHead style={{ width: "25%" }}>Date</TableHead>
                 <TableHead style={{ width: "25%" }}>Total Price</TableHead>
                 <TableHead style={{ width: "20%" }}>Items Count</TableHead>
@@ -77,23 +77,57 @@ export default function TransactionsPage() {
                   <TableRow
                     className={`cursor-pointer ${
                       expandedTransactionId === transaction.id
-                        ? "bg-muted/60"
+                        ? "bg-background/50"
                         : ""
                     }`}
                     onClick={() => toggleTransaction(transaction.id)}
                   >
-                    <TableCell>
-                      {new Date(transaction.createdAt).toLocaleDateString()}
+                    <TableCell className="sm:w-1/4">
+                      <div className="flex flex-col sm:flex-row sm:items-center">
+                        <div className="font-medium">
+                          {new Date(transaction.createdAt).toLocaleDateString()}
+                        </div>
+                        <div className="sm:hidden mt-1">
+                          <div className="text-sm text-muted-foreground">
+                            ID: {truncateId(transaction.id)}
+                          </div>
+                          <div className="flex justify-between mt-2">
+                            <div>
+                              <p className="text-sm text-muted-foreground">
+                                Total:
+                              </p>
+                              <p className="text-sm font-medium">
+                                ${transaction.totalPrice}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">
+                                Items:
+                              </p>
+                              <p className="text-sm font-medium">
+                                {transaction.items.reduce(
+                                  (total, item) => total + item.quantity,
+                                  0
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </TableCell>
-                    <TableCell>${transaction.totalPrice}</TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      ${transaction.totalPrice}
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       {transaction.items.reduce(
                         (total, item) => total + item.quantity,
                         0
                       )}
                     </TableCell>
-                    <TableCell>{truncateId(transaction.id)}</TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      {truncateId(transaction.id)}
+                    </TableCell>
+                    <TableCell className="text-right sm:text-left">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -113,23 +147,32 @@ export default function TransactionsPage() {
                     <TableRow>
                       <TableCell colSpan={5} className="p-0 bg-muted/60">
                         <div className="w-full">
-                          <div className="w-full">
-                            <div className="hidden sm:grid sm:grid-cols-5 sm:gap-4 p-4 bg-muted text-muted-foreground font-medium">
-                              <div className="w-full">Item</div>
-                              <div className="w-full">Name</div>
-                              <div className="w-full">ID</div>
-                              <div className="w-full">Price</div>
-                              <div className="w-full">Quantity</div>
-                            </div>
-                            <div className="w-full">
+                          <Table className="w-full table-fixed">
+                            <TableHeader>
+                              <TableRow className="hidden sm:table-row">
+                                <TableHead style={{ width: "20%" }}>
+                                  Item
+                                </TableHead>
+                                <TableHead style={{ width: "20%" }}>
+                                  Name
+                                </TableHead>
+                                <TableHead style={{ width: "20%" }}>
+                                  ID
+                                </TableHead>
+                                <TableHead style={{ width: "20%" }}>
+                                  Price
+                                </TableHead>
+                                <TableHead style={{ width: "20%" }}>
+                                  Quantity
+                                </TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
                               {transaction.items.map((item) => (
-                                <Card
-                                  key={item.id}
-                                  className="mb-4 sm:mb-0 sm:rounded-none sm:border-x-0 sm:border-t-0 sm:last:border-b-0"
-                                >
-                                  <CardContent className="p-4 mt-3 sm:p-0 sm:grid sm:grid-cols-5 sm:gap-4 sm:items-center">
-                                    <div className="flex items-center sm:col-span-1">
-                                      <div className="w-12 h-12 flex-shrink-0 m-3">
+                                <TableRow key={item.id} className="sm:border-t">
+                                  <TableCell className="sm:w-1/5">
+                                    <div className="flex items-center">
+                                      <div className="w-12 h-12 flex-shrink-0">
                                         <Image
                                           src={item.image}
                                           alt={item.name}
@@ -138,43 +181,63 @@ export default function TransactionsPage() {
                                           className="rounded-md object-cover"
                                         />
                                       </div>
-                                      <div className="sm:hidden">
+                                      <div className="sm:hidden ml-3 flex-1">
                                         <p className="font-medium truncate max-w-[150px]">
                                           {item.name}
                                         </p>
                                         <p className="text-sm text-muted-foreground">
                                           ID: {item.cardId}
                                         </p>
+                                        <div className="flex justify-between mt-2">
+                                          <div>
+                                            <p className="text-sm text-muted-foreground">
+                                              Price:
+                                            </p>
+                                            <p className="text-sm font-medium">
+                                              $
+                                              {(
+                                                item.priceAtPurchase *
+                                                item.quantity
+                                              ).toFixed(2)}
+                                            </p>
+                                          </div>
+                                          <div>
+                                            <p className="text-sm text-muted-foreground">
+                                              Quantity:
+                                            </p>
+                                            <p className="text-sm font-medium">
+                                              {item.quantity}
+                                            </p>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
-                                    <p className="hidden sm:block font-medium truncate">
+                                  </TableCell>
+                                  <TableCell className="hidden sm:table-cell">
+                                    <p className="font-medium truncate">
                                       {item.name}
                                     </p>
-                                    <p className="hidden sm:block text-sm text-muted-foreground truncate">
+                                  </TableCell>
+                                  <TableCell className="hidden sm:table-cell">
+                                    <p className="text-sm text-muted-foreground truncate">
                                       {item.cardId}
                                     </p>
-                                    <div className="flex justify-between sm:block mt-2 sm:mt-0">
-                                      <p className="text-sm font-medium sm:hidden">
-                                        Price:
-                                      </p>
-                                      <p className="text-sm">
-                                        $
-                                        {(
-                                          item.priceAtPurchase * item.quantity
-                                        ).toFixed(2)}
-                                      </p>
-                                    </div>
-                                    <div className="flex justify-between sm:block mt-2 sm:mt-0">
-                                      <p className="text-sm font-medium sm:hidden">
-                                        Quantity:
-                                      </p>
-                                      <p className="text-sm">{item.quantity}</p>
-                                    </div>
-                                  </CardContent>
-                                </Card>
+                                  </TableCell>
+                                  <TableCell className="hidden sm:table-cell">
+                                    <p className="text-sm">
+                                      $
+                                      {(
+                                        item.priceAtPurchase * item.quantity
+                                      ).toFixed(2)}
+                                    </p>
+                                  </TableCell>
+                                  <TableCell className="hidden sm:table-cell">
+                                    <p className="text-sm">{item.quantity}</p>
+                                  </TableCell>
+                                </TableRow>
                               ))}
-                            </div>
-                          </div>
+                            </TableBody>
+                          </Table>
                         </div>
                       </TableCell>
                     </TableRow>
