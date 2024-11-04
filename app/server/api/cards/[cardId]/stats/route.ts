@@ -10,12 +10,10 @@ interface CardStats {
   revenue: number;
 }
 
-export async function GET(
-  request: NextRequest,
-  context: { params: { cardId: string } }
-) {
+type Params = Promise<{ cardId: string }>;
+export async function GET(request: NextRequest, context: { params: Params }) {
   try {
-    const { cardId } = context.params;
+    const { cardId } = await context.params;
 
     // Get daily stats for the last 30 days
     const thirtyDaysAgo = new Date();
