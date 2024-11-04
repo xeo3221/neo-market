@@ -7,7 +7,7 @@ import { useInventoryStore } from "../stores/useInventoryStore";
 import { useInventory } from "@/hooks/use-inventory";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
+import { InventoryDistributionChart } from "../_components/charts/InventoryDistributionChart";
 export default function InventoryPage() {
   const { filteredItems, setItems, getTotalValue } = useInventoryStore();
   const router = useRouter();
@@ -70,16 +70,38 @@ export default function InventoryPage() {
           </span>
         </div>
       </div>
-
+      <div className="mb-8">
+        <InventoryDistributionChart />
+      </div>
       {Object.entries(groupedInventory).map(([type, cards]) => (
         <div key={type} className="mb-8">
-          <h2 className="text-xl font-semibold mb-4 capitalize">{type}s</h2>
+          <h2 className="text-lg font-semibold mb-4 capitalize">{type}s</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 sm:gap-y-16 pb-16">
             {cards.map((card) => (
               <Card
                 key={card.cardId}
-                className="overflow-hidden bg-background border border-gray-700 transition-all hover:border-gray-600 hover:shadow-lg hover:shadow-cyan-700/20"
+                className="group relative cursor-pointer overflow-hidden bg-background border border-gray-700 transition-all hover:border-gray-600 hover:shadow-lg hover:shadow-cyan-700/20"
+                onClick={() => router.push(`/card/${card.cardId}`)}
+                onMouseMove={(e) => {
+                  const tooltip = e.currentTarget.querySelector(
+                    ".tooltip"
+                  ) as HTMLElement;
+                  if (tooltip) {
+                    tooltip.style.left = `${e.clientX + 10}px`;
+                    tooltip.style.top = `${e.clientY + 10}px`;
+                  }
+                }}
               >
+                <div className="tooltip fixed pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-white px-3 py-1.5 rounded-md text-sm z-50 flex items-center gap-2">
+                  <Image
+                    src={card.image || "/placeholder-image.jpg"}
+                    alt="Preview"
+                    width={24}
+                    height={24}
+                    className="rounded-sm"
+                  />
+                  Go to card page
+                </div>
                 <CardContent className="p-0">
                   <Image
                     src={card.image || "/placeholder-image.jpg"}

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { ItemType, ItemRarity } from "@/data/items";
 
-interface InventoryItem {
+export interface InventoryItem {
   cardId: number;
   name: string;
   type: ItemType;
