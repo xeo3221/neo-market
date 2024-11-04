@@ -1,10 +1,8 @@
 "use client";
 
-import { useTransactions } from "@/hooks/use-transactions";
+import { useTransactionsTable } from "@/hooks/use-transactions-table";
 import { useTransactionsStore } from "../stores/useTransactionsStore";
-import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import Image from "next/image";
 import {
   Table,
   TableBody,
@@ -13,23 +11,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import React from "react";
+import Image from "next/image";
 
 export default function TransactionsPage() {
-  const { data, isLoading, error } = useTransactions();
-  const {
-    transactions,
-    setTransactions,
-    expandedTransactionId,
-    toggleTransaction,
-  } = useTransactionsStore();
-
-  useEffect(() => {
-    if (data) {
-      setTransactions(data);
-    }
-  }, [data, setTransactions]);
+  const { table, isLoading, error } = useTransactionsTable();
+  const { expandedTransactionId, toggleTransaction } = useTransactionsStore();
 
   if (isLoading) {
     return (
@@ -53,8 +42,6 @@ export default function TransactionsPage() {
     );
   }
 
-  const truncateId = (id: string) => `${id.slice(0, 5)}...`;
-
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold mb-6">Your Transactions</h1>
@@ -63,33 +50,47 @@ export default function TransactionsPage() {
         <div className="max-w-full">
           <Table className="w-full table-fixed">
             <TableHeader>
-              <TableRow className="hidden sm:table-row">
-                <TableHead style={{ width: "25%" }}>Date</TableHead>
-                <TableHead style={{ width: "25%" }}>Total Price</TableHead>
-                <TableHead style={{ width: "20%" }}>Items Count</TableHead>
-                <TableHead style={{ width: "20%" }}>Transaction ID</TableHead>
-                <TableHead style={{ width: "10%" }}></TableHead>
-              </TableRow>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id} className="hidden sm:table-row">
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} style={{ width: "25%" }}>
+                      {header.isPlaceholder ? null : (
+                        <Button
+                          variant="ghost"
+                          onClick={header.column.getToggleSortingHandler()}
+                          className="hover:bg-transparent"
+                        >
+                          {header.column.columnDef.header as React.ReactNode}
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      )}
+                    </TableHead>
+                  ))}
+                  <TableHead style={{ width: "10%" }}></TableHead>
+                </TableRow>
+              ))}
             </TableHeader>
             <TableBody>
-              {transactions.map((transaction) => (
-                <React.Fragment key={transaction.id}>
+              {table.getRowModel().rows.map((row) => (
+                <React.Fragment key={row.original.id}>
                   <TableRow
                     className={`cursor-pointer ${
-                      expandedTransactionId === transaction.id
+                      expandedTransactionId === row.original.id
                         ? "bg-background/50"
                         : ""
                     }`}
-                    onClick={() => toggleTransaction(transaction.id)}
+                    onClick={() => toggleTransaction(row.original.id)}
                   >
                     <TableCell className="sm:w-1/4">
                       <div className="flex flex-col sm:flex-row sm:items-center">
                         <div className="font-medium">
-                          {new Date(transaction.createdAt).toLocaleDateString()}
+                          {new Date(
+                            row.original.createdAt
+                          ).toLocaleDateString()}
                         </div>
                         <div className="sm:hidden mt-1">
                           <div className="text-sm text-muted-foreground">
-                            ID: {truncateId(transaction.id)}
+                            ID: {row.original.id.slice(0, 5)}...
                           </div>
                           <div className="flex justify-between mt-2">
                             <div>
@@ -97,7 +98,7 @@ export default function TransactionsPage() {
                                 Total:
                               </p>
                               <p className="text-sm font-medium">
-                                ${transaction.totalPrice}
+                                ${row.original.totalPrice}
                               </p>
                             </div>
                             <div>
@@ -105,7 +106,7 @@ export default function TransactionsPage() {
                                 Items:
                               </p>
                               <p className="text-sm font-medium">
-                                {transaction.items.reduce(
+                                {row.original.items.reduce(
                                   (total, item) => total + item.quantity,
                                   0
                                 )}
@@ -116,26 +117,26 @@ export default function TransactionsPage() {
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      ${transaction.totalPrice}
+                      ${row.original.totalPrice}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      {transaction.items.reduce(
+                      {row.original.items.reduce(
                         (total, item) => total + item.quantity,
                         0
                       )}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      {truncateId(transaction.id)}
+                      {row.original.id.slice(0, 20)}...
                     </TableCell>
                     <TableCell className="text-right sm:text-left">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          toggleTransaction(transaction.id);
+                          toggleTransaction(row.original.id);
                         }}
                         className="p-2 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
                       >
-                        {expandedTransactionId === transaction.id ? (
+                        {expandedTransactionId === row.original.id ? (
                           <ChevronUp className="h-4 w-4" />
                         ) : (
                           <ChevronDown className="h-4 w-4" />
@@ -143,7 +144,7 @@ export default function TransactionsPage() {
                       </button>
                     </TableCell>
                   </TableRow>
-                  {expandedTransactionId === transaction.id && (
+                  {expandedTransactionId === row.original.id && (
                     <TableRow>
                       <TableCell colSpan={5} className="p-0 bg-muted/60">
                         <div className="w-full">
@@ -168,7 +169,7 @@ export default function TransactionsPage() {
                               </TableRow>
                             </TableHeader>
                             <TableBody>
-                              {transaction.items.map((item) => (
+                              {row.original.items.map((item) => (
                                 <TableRow key={item.id} className="sm:border-t">
                                   <TableCell className="sm:w-1/5">
                                     <div className="flex items-center">

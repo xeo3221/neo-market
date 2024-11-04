@@ -59,18 +59,6 @@ export async function getCardData(cardId: string) {
   }
 }
 
-// transaction details
-export async function getTransactionDetailsData(transactionId: string) {
-  try {
-    const response = await fetch(`/server/api/transactions/${transactionId}`);
-    if (!response.ok) throw new Error("Failed to fetch transaction details");
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching transaction details:", error);
-    throw error;
-  }
-}
-
 export const pages = [
   {
     name: "Marketplace",
