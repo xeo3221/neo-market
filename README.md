@@ -165,19 +165,31 @@ The application uses a PostgreSQL database with the following main tables:
 
 ### Landing Page
 
-![Landing Page](https://i.imgur.com/XYZ123.png)
+![Screenshot 2024-12-05 at 22 09 49](https://github.com/user-attachments/assets/73330da3-3578-464e-8d68-e9c70835826f)
 
-### Marketplace
+## Login Page
 
-![Marketplace](https://i.imgur.com/XYZ124.png)
+![logiin](https://github.com/user-attachments/assets/7a004e41-d36f-4dbb-bdb2-75d0fbf47a5b)
+
+## Marketplace
+
+![marketplace](https://github.com/user-attachments/assets/dc42d15b-a355-4ace-b303-02eff51a966e)
+
+### Cart
+
+![Screenshot 2024-12-05 at 22 11 25](https://github.com/user-attachments/assets/60450879-fada-40a2-acaf-295007164e31)
+
 
 ### Inventory
 
-![Inventory](https://i.imgur.com/XYZ125.png)
+![Screenshot 2024-12-05 at 22 11 56](https://github.com/user-attachments/assets/80bde845-701e-47d4-9822-f54974c76197)
 
-### Cart & Checkout
+### Card Info 
 
-![Cart](https://i.imgur.com/XYZ126.png)
+![cardd](https://github.com/user-attachments/assets/6d5776af-18f4-4969-a904-4ae0b7cb3329)
+
+
+
 
 ## 🔮 Future Improvements
 
