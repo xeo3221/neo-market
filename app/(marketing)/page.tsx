@@ -79,12 +79,9 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex space-x-4">
-            <Link href="#" className="hover:text-pink-500">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="hover:text-purple-500">
-              Terms of Use
-            </Link>
+            <span className="text-gray-500 hover:text-pink-500">
+              Designed by Sebastian Świderski
+            </span>
           </div>
         </footer>
       </div>
