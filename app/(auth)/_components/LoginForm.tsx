@@ -123,7 +123,33 @@ export function LoginForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email" className="text-gray-300">
-              Email
+              Email:{" "}
+              <span
+                className="font-bold text-white cursor-pointer hover:text-pink-400 transition-colors relative group"
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText("xeo3221.testing@gmail.com")
+                    .then(() => {
+                      toast({
+                        title: "Copied to clipboard!",
+                        description: "Email copied successfully",
+                        variant: "default",
+                      });
+                    })
+                    .catch(() => {
+                      toast({
+                        title: "Failed to copy",
+                        description: "Please try again",
+                        variant: "destructive",
+                      });
+                    });
+                }}
+              >
+                xeo3221.testing@gmail.com
+                <span className="text-white absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gray-900 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  Copy
+                </span>
+              </span>
             </Label>
             <Input
               id="email"
@@ -135,7 +161,33 @@ export function LoginForm() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password" className="text-gray-300">
-              Password
+              Password:{" "}
+              <span
+                className="font-bold text-white cursor-pointer hover:text-pink-400 transition-colors relative group"
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText("NeoMarket!")
+                    .then(() => {
+                      toast({
+                        title: "Copied to clipboard!",
+                        description: "Email copied successfully",
+                        variant: "default",
+                      });
+                    })
+                    .catch(() => {
+                      toast({
+                        title: "Failed to copy",
+                        description: "Please try again",
+                        variant: "destructive",
+                      });
+                    });
+                }}
+              >
+                NeoMarket!
+                <span className="text-white absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gray-900 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  Copy
+                </span>
+              </span>
             </Label>
             <div className="relative">
               <Input
