@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+// import { FormEvent, useState } from "react";
 
 export function CartTable() {
   const { items, updateQuantity, removeItem, getTotal } = useCartStore();
@@ -37,13 +38,56 @@ export function CartTable() {
     }
   };
 
+  // const [discoutCode, setDiscountCode] = useState("");
+
   if (items.length === 0) {
     return <p className="text-center py-4">Your cart is empty</p>;
   }
 
+  // const rabatCodes = ["WIOSNA", "LATO", "JESIEŃ", "ZIMA"];
+  // const handleRabat = (event: FormEvent) => {
+  //   event.preventDefault();
+
+  //   if (rabatCodes.includes(discoutCode.toUpperCase())) {
+  //     toast({
+  //       duration: 1000,
+  //       title: "Rabat",
+  //       description: `Kod rabatowy ${discoutCode.toUpperCase()} został zastosowany.`,
+  //       variant: "default",
+  //     });
+  //   } else {
+  //     toast({
+  //       duration: 1000,
+  //       title: "Błąd",
+  //       description: `Kod rabatowy ${discoutCode.toUpperCase()} jest nieprawidłowy.`,
+  //       variant: "destructive",
+  //     });
+  //   }
+  // };
+
   return (
     <div className="w-full">
       <div className="hidden md:block">
+        {/* <div className="flex items-center gap-2">
+          <label>Promo Code</label>
+          <form
+            onSubmit={handleRabat}
+            id="discount-form"
+            className="flex items-center gap-2"
+          >
+            <input
+              type="text"
+              className="border border-gray-300 rounded-md p-2"
+              placeholder="LATO"
+              value={discoutCode}
+              onChange={(e) => setDiscountCode(e.target.value)}
+            />
+            <Button type="submit" variant="default">
+              Add
+            </Button>
+          </form>
+        </div> */}
+
         <Table>
           <TableHeader>
             <TableRow>
@@ -178,12 +222,6 @@ export function CartTable() {
             </div>
           </div>
         ))}
-        <div className="border-t pt-4 mt-4">
-          {/* <div className="flex justify-between items-center font-bold">
-            <span>Total:</span>
-            <span>${getTotal().toLocaleString()}</span>
-          </div> */}
-        </div>
       </div>
     </div>
   );
